@@ -8,7 +8,7 @@ namespace Interpreter
         private const char STRING_SIGN = '"';
         private const char UNDERLINE = '_';
         private const char WHITESPACE = ' ';
-        private const char NEXT_LINE = '\n';
+        private const char NEW_LINE = '\n';
 
         private char _currentSymbol;
         private int _index;
@@ -32,15 +32,13 @@ namespace Interpreter
 
         public void NextToken()
         {
-            string CurrentSymbolString = _currentSymbol.ToString();
-
             if (_index >= _contentLength) 
             {
                 _token = null;
                 return;
             }
 
-            if (_currentSymbol == WHITESPACE || _currentSymbol == NEXT_LINE) 
+            if (_currentSymbol == WHITESPACE || _currentSymbol == NEW_LINE) 
             {
                 SkipWhitespace();
             }
@@ -54,7 +52,7 @@ namespace Interpreter
             }
             else
             {
-                _token = new Token(_currentSymbol, CurrentSymbolString);
+                _token = new Token(_currentSymbol, _currentSymbol.ToString());
                 NextSymbol();
             }
         }
@@ -101,7 +99,7 @@ namespace Interpreter
 
         private void SkipWhitespace()
         {
-            while (_currentSymbol == WHITESPACE)
+            while (_currentSymbol == WHITESPACE || _currentSymbol == NEW_LINE)
             {
                 NextSymbol();
             }

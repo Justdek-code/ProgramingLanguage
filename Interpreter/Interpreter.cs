@@ -6,7 +6,7 @@ namespace Interpreter
     {
         static void Main(string[] args)
         {
-            Lexer lexer = new Lexer("var a = \"Hello Wordl!\"");
+            Lexer lexer = new Lexer("var a = \"Hello Wordl!\" \n print(a)");
             Token token = lexer.GetToken();
 
             while (token != null) 

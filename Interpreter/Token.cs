@@ -6,11 +6,9 @@ namespace Interpreter
         STRING,
         COMMA,
         ASSIGNMENT,
-        EQUAL,
         SEMI,
         LPARENTHESIS,
         RPARENTHESIS,
-        NULL
     }
 
     public class Token
