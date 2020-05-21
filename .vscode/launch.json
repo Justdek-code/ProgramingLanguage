@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Interpreter/bin/Debug/netcoreapp3.1/Interpreter.dll",
+            "program": "${workspaceFolder}/SchoolScript/bin/Debug/netcoreapp3.1/SchoolScript.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Interpreter",
+            "cwd": "${workspaceFolder}/SchoolScript",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false
