@@ -30,6 +30,7 @@ namespace SchoolScript
             return new List<IToken>(_tokens);
         }        
 
+
         private List<IToken> ExtractTokens()
         {
             List<IToken> tokens = new List<IToken>();
