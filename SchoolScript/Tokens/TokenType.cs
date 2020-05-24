@@ -9,7 +9,11 @@ namespace SchoolScript.Tokens
         COMMA,
         ASSIGNMENT,
         EQUAL,
+        LESS,
+        BIGGER,
         SEMI,
+        LCURLY_BRACE,
+        RCURLY_BRACE,
         LPARENTHESIS,
         RPARENTHESIS,
     }

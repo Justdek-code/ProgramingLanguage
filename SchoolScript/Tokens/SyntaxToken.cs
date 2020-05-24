@@ -20,10 +20,14 @@ namespace SchoolScript.Tokens
         {
             if (identifier == "=") return TokenType.ASSIGNMENT;
             else if (identifier == "==") return TokenType.EQUAL;
+            else if (identifier == "<") return TokenType.LESS;
+            else if (identifier == ">") return TokenType.BIGGER;
             else if (identifier == ";") return TokenType.SEMI;
             else if (identifier == "(") return TokenType.LPARENTHESIS;
             else if (identifier == ")") return TokenType.RPARENTHESIS;
             else if (identifier == ",") return TokenType.COMMA;
+            else if (identifier == "{") return TokenType.LCURLY_BRACE;
+            else if (identifier == "}") return TokenType.RCURLY_BRACE;
             else if (_mathOperations.Contains(identifier)) return TokenType.MATH_OPERATION;
 
             throw new NotImplementedException("Syntax token is not recognized");

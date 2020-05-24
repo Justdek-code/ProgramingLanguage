@@ -11,16 +11,17 @@ namespace SchoolScript
         private string _content;
         private int _contentLenght;
         private char _currentSymbol;
+        private readonly string EQUAL_SIGN = "==";
         private readonly char STRING_DEFINITION = '"';
         private readonly char UNDERLINE = '_';
         private readonly char WHITESPACE = ' ';
         private readonly char NEW_LINE = '\n';
 
 
-        public Lexer(string content)
+        public Lexer(FileReader file)
         {
-            _contentLenght = content.Length;
-            _content = content;
+            _content = file.GetContent();
+            _contentLenght = _content.Length;
             _currentSymbol = _content[_index];
             _tokens = ExtractTokens();
         }
@@ -30,41 +31,62 @@ namespace SchoolScript
             return new List<IToken>(_tokens);
         }        
 
+        public void PrintTokens()
+        {
+            foreach (IToken token in _tokens)
+            {
+                System.Console.WriteLine($"Token (Type: {token.Type}; Value: \"{token.Value}\")");
+            }
+        }
 
         private List<IToken> ExtractTokens()
         {
             List<IToken> tokens = new List<IToken>();
 
+            IToken temp;
             while (_index < _contentLenght)
             {
                 if (_currentSymbol == WHITESPACE || _currentSymbol == NEW_LINE)
                 {
                     SkipWhitespace();
+                    continue;
                 }
-                else if (Char.IsNumber(_currentSymbol) )
-                {
-                    IToken numberToken = CollectNumber();
-                    tokens.Add(numberToken);
-                }
-                else if (Char.IsLetter(_currentSymbol) || _currentSymbol == UNDERLINE )
-                {
-                    IToken identifierToken = CollectIdentifier();
-                    tokens.Add(identifierToken);
-                }
-                else if (_currentSymbol == STRING_DEFINITION)
-                {
-                    IToken stringToken = CollectString();
-                    tokens.Add(stringToken);
-                }
+                else if (Char.IsNumber(_currentSymbol) ) temp = CollectNumber();
+                else if (Char.IsLetter(_currentSymbol) || _currentSymbol == UNDERLINE) temp = CollectIdentifier();
+                else if (_currentSymbol == STRING_DEFINITION) temp = CollectString();
                 else
                 {
-                    IToken syntaxToken = new SyntaxToken(_currentSymbol.ToString());
-                    tokens.Add(syntaxToken);
+                    if (IsEqualSign())
+                    {
+                        temp = new SyntaxToken(EQUAL_SIGN);
+                    }
+                    else
+                    {
+                        temp = new SyntaxToken(_currentSymbol.ToString());
+                    }
                     NextSymbol();
                 }
+
+                tokens.Add(temp);
             }
         
             return tokens;
+        }
+
+        private bool IsEqualSign()
+        {
+            if (_currentSymbol == '=')
+            {
+                NextSymbol();
+                if (_currentSymbol == '=')
+                {
+                    return true;
+                }
+                
+                PreviousSymbol();
+            }
+            
+            return false;
         }
 
         private void NextSymbol(int step = 1)
