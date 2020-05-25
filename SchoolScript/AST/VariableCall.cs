@@ -13,6 +13,7 @@ namespace SchoolScript.AST
         {
             Type = ASTType.VARIABLE_CALL;
             VariableName = variableName;
+            Leaves = new List<ICompound>();
         }
     }
 }

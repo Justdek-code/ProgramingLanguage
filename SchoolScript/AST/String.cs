@@ -13,6 +13,7 @@ namespace SchoolScript.AST
         {
             Type = ASTType.STRING;
             StringValue = value;
+            Leaves = new List<ICompound>();
         }
     }
 }

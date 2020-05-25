@@ -15,7 +15,7 @@ namespace SchoolScript.Tests
             operands.Add(num1);
             operands.Add(num2);
             ICompound operation = new MathOperation(operands, "+");
-            ICompound varDefiniton = new VariableDefinition(operation, "a");
+            ICompound varDefiniton = new VariableDefinition("a", operation);
 
             List<ICompound> arguments = new List<ICompound>();
             ICompound str = new AST.String("I'm script");
@@ -41,6 +41,9 @@ namespace SchoolScript.Tests
             statements.Add(ifStatement);
             statements.Add(forLoop);
             
+            ICompound newValueAssignment = new Assignment("a", new Integer(0));
+            statements.Add(newValueAssignment);
+
             compound = new CompoundTree(statements);
         }
     }

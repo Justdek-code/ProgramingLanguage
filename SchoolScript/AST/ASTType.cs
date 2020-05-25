@@ -12,6 +12,7 @@ namespace SchoolScript.AST
         IF_STATEMENT,
         FOR_LOOP,
         STRING,
+        ASSIGNMENT,
         IDENTIFIER
     }
 }

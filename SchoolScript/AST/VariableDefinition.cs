@@ -8,11 +8,13 @@ namespace SchoolScript.AST
         public List<ICompound> Leaves { get; set; }
         public string VariableDefinitionName { get; set; }
 
-        public VariableDefinition(ICompound value, string variableName)
-        {
-            Leaves = new List<ICompound>();
-            Leaves.Add(value);
+        public VariableDefinition(string variableName, ICompound initialization)
+        {   
             Type = ASTType.VAR_DEFINITION;
+            
+            Leaves = new List<ICompound>();
+            ICompound varInitialization = new Assignment(variableName, initialization); 
+            Leaves.Add(varInitialization);
             VariableDefinitionName = variableName;
         }
     }

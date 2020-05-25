@@ -18,6 +18,7 @@ namespace SchoolScript
 
 
             ParserTest parserTest = new ParserTest();
+            Evaluator evaluator = new Evaluator(parserTest.compound);
         }           
     }
 }

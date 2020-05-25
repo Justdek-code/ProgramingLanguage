@@ -9,6 +9,7 @@ if (a == 2)
 {
     print("Hello World");
 }
+a = 0;
 if (a < 1)
 {
     print("Hello");
