@@ -10,6 +10,7 @@ namespace SchoolScript.AST
         MATH_OPERATION,
         EQUATION,
         IF_STATEMENT,
+        FOR_LOOP,
         STRING,
         IDENTIFIER
     }

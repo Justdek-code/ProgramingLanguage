@@ -33,8 +33,13 @@ namespace SchoolScript.Tests
             blockStatements.Add(func);
             Equation equation = new Equation(operands, "==");
             ICompound ifStatement = new If(equation, blockStatements);
+
+            List<ICompound> loopBlock = new List<ICompound>();
+            loopBlock.Add(func);
+            ICompound forLoop = new ForLoop(5, loopBlock);
             
             statements.Add(ifStatement);
+            statements.Add(forLoop);
             
             compound = new CompoundTree(statements);
         }
