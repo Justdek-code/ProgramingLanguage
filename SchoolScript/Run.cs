@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SchoolScript.Tokens;
 using SchoolScript.AST;
 using SchoolScript.Tests;
+using SchoolScript.EvaluatorClasses;
 
 namespace SchoolScript
 {
@@ -19,6 +20,7 @@ namespace SchoolScript
 
             ParserTest parserTest = new ParserTest();
             Evaluator evaluator = new Evaluator(parserTest.compound);
+            evaluator.Execute();
         }           
     }
 }
