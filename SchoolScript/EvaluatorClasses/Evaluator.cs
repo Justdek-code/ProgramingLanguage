@@ -28,7 +28,7 @@ namespace SchoolScript.EvaluatorClasses
                 }
                 else if (statement.Type == ASTType.ASSIGNMENT)
                 {
-
+                    AssignVariableValue(statement);
                 }
                 else if (statement.Type == ASTType.FUNCTION_CALL)
                 {
@@ -53,8 +53,38 @@ namespace SchoolScript.EvaluatorClasses
         private void DefineVariable(ICompound statement)
         {
             Variable newVar = new Variable();
-            VariableDefinition definition = (VariableDefinition) statement;
+            IVariableDefinition definition = (IVariableDefinition) statement;
             _variableHeap.Add(definition.VariableDefinitionName, newVar);
+
+            AssignVariableValue( definition.Leaves[0]);
+        }
+
+        private void AssignVariableValue(ICompound assignment)
+        {
+            IAssignment varAssignment = (IAssignment) assignment;
+            string variableName = varAssignment.VariableName;
+            ICompound value = varAssignment.Leaves[0];
+
+            if (!_variableHeap.ContainsKey(variableName))
+            {
+                throw new NotImplementedException($"error: variable '{variableName}' is not defined");
+            }
+
+            if (value.Type == ASTType.STRING)
+            {
+                IString str = (IString) value;
+                _variableHeap[variableName] = new Variable(str.StringValue);
+            }
+            else if (value.Type == ASTType.INTEGER)
+            {
+                IInteger number = (IInteger) value;
+                _variableHeap[variableName] = new Variable(number.IntegerValue);
+            }
+            else if (value.Type == ASTType.MATH_OPERATION)
+            {
+                Math math = new Math(value);
+                _variableHeap[variableName] = new Variable(math.GetContent());
+            }
         }
     }
 }

@@ -48,7 +48,7 @@ namespace SchoolScript.EvaluatorClasses
         {
             if (Type == VariableType.STRING || Type == VariableType.NULL) 
             {
-                throw new NotImplementedException("error: 'string' type variable cannot return 'int' or it is NULL");
+                throw new NotImplementedException($"error: '{Type.ToString()}' type variable cannot return 'int'");
             }
 
             return intValue;
@@ -58,7 +58,7 @@ namespace SchoolScript.EvaluatorClasses
         {
             if (Type == VariableType.INTEGER || Type == VariableType.NULL)
             {
-                throw new NotImplementedException("error: 'int' type variable cannot return 'string' or it is NULL");
+                throw new NotImplementedException($"error: '{Type.ToString()}' type variable cannot return 'string'");
             }
 
             return stringValue;
