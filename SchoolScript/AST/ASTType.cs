@@ -8,6 +8,8 @@ namespace SchoolScript.AST
         FUNCTION_CALL,
         INTEGER,
         MATH_OPERATION,
+        EQUATION,
+        IF_STATEMENT,
         STRING,
         IDENTIFIER
     }
