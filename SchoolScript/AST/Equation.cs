@@ -5,7 +5,7 @@ namespace SchoolScript.AST
 {
     public class Equation : IEquation
     {
-        public string Sign { get; set; }
+        public string Sign { get; set; } //note
         public ICompound LeftOperand { get; set; }
         public ICompound RightOperand { get; set; }
         public ASTType Type { get; set; }

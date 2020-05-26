@@ -1,4 +1,5 @@
 using System;
+using SchoolScript.AST;
 
 
 namespace SchoolScript.EvaluatorClasses
@@ -7,26 +8,34 @@ namespace SchoolScript.EvaluatorClasses
     {
         INTEGER,
         STRING,
+        BOOLEAN,
         NULL
     }
 
     public class Variable
     {
         public VariableType Type;
-        private string stringValue;
-        private int intValue;
+        private AST.String _stringValue;
+        private AST.Integer _intValue;
+        private AST.Boolean _boolValue;
 
 
         public Variable(string value)
         {
             Type = VariableType.STRING;
-            stringValue = value;
+            _stringValue = new AST.String(value);
         }
 
         public Variable(int value)
         {
             Type = VariableType.INTEGER;
-            intValue = value;
+            _intValue = new AST.Integer(value);
+        }
+
+        public Variable(bool value)
+        {
+            Type = VariableType.BOOLEAN;
+            _boolValue = new AST.Boolean(value);
         }
 
         public Variable()
@@ -44,25 +53,27 @@ namespace SchoolScript.EvaluatorClasses
             return new Variable(newValue);
         }
 
-        public int GetIntValue()
+        public Variable Reassignment(bool newValue)
         {
-            if (Type == VariableType.STRING || Type == VariableType.NULL) 
-            {
-                throw new NotImplementedException($"error: '{Type.ToString()}' type variable cannot return 'int'");
-            }
-
-            return intValue;
+            return new Variable(newValue);
         }
 
-        public string GetStringValue()
+        public ICompound GetContent()
         {
-            if (Type == VariableType.INTEGER || Type == VariableType.NULL)
+            if (Type == VariableType.INTEGER)
             {
-                throw new NotImplementedException($"error: '{Type.ToString()}' type variable cannot return 'string'");
+                return _intValue;
+            }
+            else if (Type == VariableType.STRING)
+            {
+                return _stringValue;
+            }
+            else if (Type == VariableType.BOOLEAN)
+            {
+                return _boolValue;
             }
 
-            return stringValue;
+            throw new NotImplementedException("error: variable is not initialized");
         }
     }
-
 }

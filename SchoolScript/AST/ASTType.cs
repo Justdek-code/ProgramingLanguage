@@ -7,6 +7,7 @@ namespace SchoolScript.AST
         VARIABLE_CALL,
         FUNCTION_CALL,
         INTEGER,
+        BOOLEAN,
         MATH_OPERATION,
         EQUATION,
         IF_STATEMENT,

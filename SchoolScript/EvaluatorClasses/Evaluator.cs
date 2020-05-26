@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using SchoolScript.AST;
 using SchoolScript.Tokens;
+using SchoolScript.InlineFunctions;
+
 
 namespace SchoolScript.EvaluatorClasses
 {
@@ -9,13 +11,13 @@ namespace SchoolScript.EvaluatorClasses
     public class Evaluator
     {
         private ICompound _compound;
-        private Dictionary<string, Variable> _variableHeap;
+        private VariablesHeap _variables;
 
 
         public Evaluator(ICompound compound) // it future it will takes parser object 
         {
             _compound = compound;
-            _variableHeap = new Dictionary<string, Variable>();
+            _variables = new VariablesHeap();
         }
 
         public void Execute()
@@ -24,15 +26,15 @@ namespace SchoolScript.EvaluatorClasses
             {
                 if (statement.Type == ASTType.VAR_DEFINITION)
                 {
-                    DefineVariable(statement);
+                    DefineVariable((IVariableDefinition) statement);
                 }
                 else if (statement.Type == ASTType.ASSIGNMENT)
                 {
-                    AssignVariableValue(statement);
+                    AssignVariableValue((IAssignment) statement);
                 }
                 else if (statement.Type == ASTType.FUNCTION_CALL)
                 {
-
+                    CallFunction((IFunctionCall) statement);
                 }
                 else if (statement.Type == ASTType.IF_STATEMENT)
                 {
@@ -46,45 +48,56 @@ namespace SchoolScript.EvaluatorClasses
                 {
                     throw new NotImplementedException("error: statement is not recognized");
                 }
-
             }
         }
 
-        private void DefineVariable(ICompound statement)
+        private void DefineVariable(IVariableDefinition definition)
         {
             Variable newVar = new Variable();
-            IVariableDefinition definition = (IVariableDefinition) statement;
-            _variableHeap.Add(definition.VariableDefinitionName, newVar);
+            _variables.AddVariable(definition.VariableDefinitionName, newVar);
 
-            AssignVariableValue( definition.Leaves[0]);
+            if (definition.Leaves[0].Type == ASTType.ASSIGNMENT)
+            {
+                IAssignment varInitialization = (IAssignment) definition.Leaves[0];
+                AssignVariableValue(varInitialization);
+            }
         }
 
-        private void AssignVariableValue(ICompound assignment)
+        private void AssignVariableValue(IAssignment assignment)
         {
-            IAssignment varAssignment = (IAssignment) assignment;
-            string variableName = varAssignment.VariableName;
-            ICompound value = varAssignment.Leaves[0];
-
-            if (!_variableHeap.ContainsKey(variableName))
-            {
-                throw new NotImplementedException($"error: variable '{variableName}' is not defined");
-            }
+            string variableName = assignment.VariableName;
+            ICompound value = assignment.Leaves[0];
 
             if (value.Type == ASTType.STRING)
             {
-                IString str = (IString) value;
-                _variableHeap[variableName] = new Variable(str.StringValue);
+                IString variable = (IString) value;
+                _variables.AddVariable(variableName, new Variable(variable.StringValue));
             }
             else if (value.Type == ASTType.INTEGER)
             {
-                IInteger number = (IInteger) value;
-                _variableHeap[variableName] = new Variable(number.IntegerValue);
+                IInteger variable = (IInteger) value;
+                _variables.AddVariable(variableName, new Variable(variable.IntegerValue));
+            }
+            else if (value.Type == ASTType.BOOLEAN)
+            {
+                IBoolean variable = (IBoolean) value;
+                _variables.AddVariable(variableName, new Variable(variable.BooleanValue));
             }
             else if (value.Type == ASTType.MATH_OPERATION)
             {
                 Math math = new Math(value);
-                _variableHeap[variableName] = new Variable(math.GetContent());
+                int result = math.GetContent();
+                _variables.AddVariable(variableName, new Variable(result));
             }
+        }
+
+        private void CallFunction(IFunctionCall callFunction)
+        {
+            if (callFunction.FunctionName == "Print")
+            {
+                new Print(callFunction.Leaves, _variables);
+            }
+            //new InternalFunction(callFunction.FunctionName, callFunction.Leaves, _variableHeap);
         }
     }
 }

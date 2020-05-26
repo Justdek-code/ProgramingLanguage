@@ -15,7 +15,7 @@ namespace SchoolScript
 
             new Lexer(
                 new FileReader(path)
-            ).PrintTokens();
+            );
 
 
             ParserTest parserTest = new ParserTest();
