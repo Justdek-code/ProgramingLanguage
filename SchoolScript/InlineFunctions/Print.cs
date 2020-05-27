@@ -6,14 +6,18 @@ using SchoolScript.EvaluatorClasses;
 
 namespace SchoolScript.InlineFunctions
 {
-    public class Print
+    public class Print : IFunction
     {
         private VariablesHeap _variables;
 
 
-        public Print(List<ICompound> arguments, VariablesHeap variables)
+        public Print(VariablesHeap variables)
         {
             _variables = variables;
+        }
+
+        public void Invoke(List<ICompound> arguments)
+        {
             PrintConsole(arguments);
         }
 

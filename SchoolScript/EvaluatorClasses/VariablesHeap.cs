@@ -7,7 +7,7 @@ namespace SchoolScript.EvaluatorClasses
     public class VariablesHeap
     {
         private Dictionary<string, Variable> _heap;
-
+        
 
         public VariablesHeap()
         {
@@ -26,14 +26,7 @@ namespace SchoolScript.EvaluatorClasses
 
         public void AddVariable(string name, Variable value)
         {
-            if (!_heap.ContainsKey(name))
-            {
-                _heap.Add(name, value);
-            }
-            else
-            {
                 _heap[name] = value;
-            }
         }
 
         public void DeleteVariable(string varName)

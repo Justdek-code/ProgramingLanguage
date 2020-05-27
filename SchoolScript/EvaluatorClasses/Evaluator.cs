@@ -12,12 +12,14 @@ namespace SchoolScript.EvaluatorClasses
     {
         private ICompound _compound;
         private VariablesHeap _variables;
+        private FunctionsHeap _functions;
 
 
         public Evaluator(ICompound compound) // it future it will takes parser object 
         {
             _compound = compound;
             _variables = new VariablesHeap();
+            _functions = new FunctionsHeap(_variables);
         }
 
         public void Execute()
@@ -93,11 +95,8 @@ namespace SchoolScript.EvaluatorClasses
 
         private void CallFunction(IFunctionCall callFunction)
         {
-            if (callFunction.FunctionName == "Print")
-            {
-                new Print(callFunction.Leaves, _variables);
-            }
-            //new InternalFunction(callFunction.FunctionName, callFunction.Leaves, _variableHeap);
+            IFunction function = _functions.GetFunction(callFunction.FunctionName);
+            function.Invoke(callFunction.Leaves);
         }
     }
 }
