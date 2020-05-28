@@ -11,6 +11,7 @@ namespace SchoolScript.Tests
         {
             List<ICompound> statements = new List<ICompound>();
             ICompound varDefiniton = new VariableDefinition("a", new Integer(5));
+            ICompound varDefiniton2 = new VariableDefinition("b", new Integer(5));
             ICompound assignment = new Assignment("a", new Integer(16));
 
             List<ICompound> arguments = new List<ICompound>();
@@ -27,16 +28,22 @@ namespace SchoolScript.Tests
             arguments.Add(operation);
             ICompound funcCall = new FunctionCall(arguments, "Print");
 
+            List<ICompound> readVar = new List<ICompound>();
+            readVar.Add(var);
+            IVariableCall var2 = new VariableCall("b");
+            ICompound readFuncCall = new FunctionCall(readVar, "ReadInteger");
+
             List<ICompound> equationOperands = new List<ICompound>();
-            equationOperands.Add(new String("Hello"));
-            equationOperands.Add(new String("Hello"));
+            equationOperands.Add(var);
+            equationOperands.Add(new Integer(16));
             ICompound equation = new Equation(equationOperands, EquationSign.EQUAL);
             List<ICompound> ifBlock = new List<ICompound>();
             ifBlock.Add(funcCall);
             ICompound ifStatement = new If(equation, ifBlock);
 
             statements.Add(varDefiniton);
-            statements.Add(assignment);
+            statements.Add(funcCall);
+            statements.Add(readFuncCall);
             statements.Add(ifStatement);
 
             compound = new CompoundTree(statements);

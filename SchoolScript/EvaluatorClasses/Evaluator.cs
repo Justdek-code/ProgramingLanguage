@@ -49,7 +49,7 @@ namespace SchoolScript.EvaluatorClasses
                 }
                 else if (statement.Type == ASTType.FOR_LOOP)
                 {
-
+                    
                 }
                 else 
                 {
@@ -61,7 +61,7 @@ namespace SchoolScript.EvaluatorClasses
         private void DefineVariable(IVariableDefinition definition)
         {
             Variable newVar = new Variable();
-            _variables.AddVariable(definition.VariableDefinitionName, newVar);
+            _variables.AssignVariable(definition.VariableDefinitionName, newVar);
 
             if (definition.Leaves[0].Type == ASTType.ASSIGNMENT)
             {
@@ -78,36 +78,36 @@ namespace SchoolScript.EvaluatorClasses
             if (value.Type == ASTType.STRING)
             {
                 IString variable = (IString) value;
-                _variables.AddVariable(variableName, new Variable(variable.StringValue));
+                _variables.AssignVariable(variableName, new Variable(variable.StringValue));
             }
             else if (value.Type == ASTType.INTEGER)
             {
                 IInteger variable = (IInteger) value;
-                _variables.AddVariable(variableName, new Variable(variable.IntegerValue));
+                _variables.AssignVariable(variableName, new Variable(variable.IntegerValue));
             }
             else if (value.Type == ASTType.BOOLEAN)
             {
                 IBoolean variable = (IBoolean) value;
-                _variables.AddVariable(variableName, new Variable(variable.BooleanValue));
+                _variables.AssignVariable(variableName, new Variable(variable.BooleanValue));
             }
             else if (value.Type == ASTType.MATH_OPERATION)
             {
                 Math math = new Math(value);
                 Integer result = math.GetContent();
-                _variables.AddVariable(variableName, new Variable(result.IntegerValue));
+                _variables.AssignVariable(variableName, new Variable(result.IntegerValue));
             }
         }
 
         private void CallFunction(IFunctionCall callFunction)
         {
-            IFunction function = _functions.GetFunction(callFunction.FunctionName);
+            Function function = _functions.GetFunction(callFunction.FunctionName);
             function.Invoke(callFunction.Leaves);
         }
 
         private void ProcessIfStatement(IStatementIf ifStatment)
         {
             IEquation equation = (IEquation) ifStatment.Equation;
-            Compare compare = new Compare(equation.Leaves, equation.Sign);
+            Compare compare = new Compare(equation.Leaves, equation.Sign, _variables);
            
             if (compare.GetContent() == true)
             {

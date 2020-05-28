@@ -43,21 +43,6 @@ namespace SchoolScript.EvaluatorClasses
             Type = VariableType.NULL;
         }
 
-        public Variable Reassignment(string newValue)
-        {
-            return new Variable(newValue);
-        }
-
-        public Variable Reassignment(int newValue)
-        {
-            return new Variable(newValue);
-        }
-
-        public Variable Reassignment(bool newValue)
-        {
-            return new Variable(newValue);
-        }
-
         public ICompound GetContent()
         {
             if (Type == VariableType.INTEGER)

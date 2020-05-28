@@ -5,21 +5,16 @@ using SchoolScript.AST;
 
 namespace SchoolScript.EvaluatorClasses
 {
-    public class Compare
+    public class Compare 
     {
         private bool _result;
+        private VariablesHeap _variables;
 
-
-        public Compare(List<ICompound> operands, EquationSign sign)
+        public Compare(List<ICompound> operands, EquationSign sign, VariablesHeap variables)
         {
-            if (sign == CompareOperands(operands))
-            {
-                _result = true;
-            }
-            else 
-            {
-                _result = false;
-            }
+            _variables = variables;
+
+            CompareOperands(operands, sign);
         }
 
         public bool GetContent()
@@ -27,9 +22,41 @@ namespace SchoolScript.EvaluatorClasses
             return _result;
         }
 
-        private EquationSign CompareOperands(List<ICompound> operands)
+        private void CompareOperands(List<ICompound> operands, EquationSign sign)
         {
+            List<ICompound> values = new List<ICompound>();
 
+            for (int i = 0; i < 2; i++)
+            {
+                if (operands[i].Type == ASTType.VARIABLE_CALL)
+                {
+                    IVariableCall variableCall = (IVariableCall) operands[i];
+                    Variable variable = _variables.GetVariable(variableCall.VariableName);
+                    values.Add(variable.GetContent());
+                }
+                else if (operands[i].Type == ASTType.MATH_OPERATION)
+                {
+                    Math math = new Math(operands[i]);
+                    values.Add(math.GetContent());
+                }
+                else 
+                {
+                    values.Add(operands[i]);
+                }
+            }
+
+            if (CompareValues(values) == sign)
+            {
+                _result = true;
+            }
+            else
+            {
+                _result = false;
+            } 
+        }
+
+        private EquationSign CompareValues(List<ICompound> operands)
+        {
             if (IsInteger(operands[0]) && IsInteger(operands[1]))
             {
                 return CompareIntegers(operands);
@@ -45,7 +72,7 @@ namespace SchoolScript.EvaluatorClasses
 
         private bool IsInteger(ICompound operand)
         {
-            if (operand.Type == ASTType.INTEGER || operand.Type == ASTType.MATH_OPERATION)
+            if (operand.Type == ASTType.INTEGER)
             {
                 return true;
             }
@@ -65,24 +92,11 @@ namespace SchoolScript.EvaluatorClasses
 
         private EquationSign CompareIntegers(List<ICompound> operands)
         {
-            List<int> solvedOperands = new List<int>();
+            int firstValue = ((IInteger)(operands[0])).IntegerValue;
+            int secondValue = ((IInteger)(operands[1])).IntegerValue;
 
-            foreach (ICompound operand in operands)
-            {
-                if (operand.Type == ASTType.MATH_OPERATION)
-                {
-                    Math math = new Math(operand);
-                    solvedOperands.Add(math.GetContent().IntegerValue);
-                }
-                else
-                {
-                    Integer value = (Integer) operand;
-                    solvedOperands.Add(value.IntegerValue);
-                }
-            }
-
-            if (solvedOperands[0] < solvedOperands[1]) return EquationSign.LESS;
-            else if (solvedOperands[0] > solvedOperands[1]) return EquationSign.BIGGER;
+            if (firstValue < secondValue) return EquationSign.LESS;
+            else if (firstValue > secondValue) return EquationSign.BIGGER;
             else return EquationSign.EQUAL; 
         }
 

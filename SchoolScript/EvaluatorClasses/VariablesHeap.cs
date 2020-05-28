@@ -24,7 +24,7 @@ namespace SchoolScript.EvaluatorClasses
             return _heap[varName];
         }
 
-        public void AddVariable(string name, Variable value)
+        public void AssignVariable(string name, Variable value)
         {
                 _heap[name] = value;
         }

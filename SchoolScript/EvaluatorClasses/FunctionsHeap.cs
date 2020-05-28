@@ -6,7 +6,7 @@ namespace SchoolScript.EvaluatorClasses
 {
     public class FunctionsHeap
     {
-        private Dictionary<string, IFunction> _functions;
+        private Dictionary<string, Function> _functions;
         private VariablesHeap _variables;
 
 
@@ -16,20 +16,21 @@ namespace SchoolScript.EvaluatorClasses
             _functions = Initialize();
         }
 
-        public void AddFunction(string funcName, IFunction newFunction)
+        public void AddFunction(string funcName, Function newFunction)
         {    
             _functions[funcName] = newFunction;
         }
 
-        public IFunction GetFunction(string functionName)
+        public Function GetFunction(string functionName)
         {
             return _functions[functionName];
         }
 
-        private Dictionary<string, IFunction> Initialize()
+        private Dictionary<string, Function> Initialize()
         {
-            Dictionary<string, IFunction> functions = new Dictionary<string, IFunction>();
+            Dictionary<string, Function> functions = new Dictionary<string, Function>();
             functions.Add("Print", new Print(_variables));
+            functions.Add("ReadInteger", new ReadInteger(_variables));
 
             return functions;
         }
