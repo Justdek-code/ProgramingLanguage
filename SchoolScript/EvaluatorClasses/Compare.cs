@@ -9,10 +9,15 @@ namespace SchoolScript.EvaluatorClasses
     {
         private bool _result;
         private VariablesHeap _variables;
+        private List<ICompound> _operands;
+        private EquationSign _sign;
+
 
         public Compare(List<ICompound> operands, EquationSign sign, VariablesHeap variables)
         {
             _variables = variables;
+            _operands = operands;
+            _sign = sign;
 
             CompareOperands(operands, sign);
         }
@@ -20,6 +25,11 @@ namespace SchoolScript.EvaluatorClasses
         public bool GetContent()
         {
             return _result;
+        }
+
+        public void Update()
+        {
+            CompareOperands(_operands, _sign);
         }
 
         private void CompareOperands(List<ICompound> operands, EquationSign sign)
@@ -36,7 +46,7 @@ namespace SchoolScript.EvaluatorClasses
                 }
                 else if (operands[i].Type == ASTType.MATH_OPERATION)
                 {
-                    Math math = new Math(operands[i]);
+                    Math math = new Math(operands[i], _variables);
                     values.Add(math.GetContent());
                 }
                 else 
@@ -65,10 +75,23 @@ namespace SchoolScript.EvaluatorClasses
             {
                 return CompareStrings(operands);
             }
-            
+            else if (IsBoolean(operands[0]) && IsBoolean(operands[1]))
+            {
+                return CompareBooleans(operands);
+            }
 
             throw new NotImplementedException("error: this variable type can't be compared");
         }   
+
+        private bool IsBoolean(ICompound operand)
+        {
+            if (operand.Type == ASTType.BOOLEAN)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         private bool IsInteger(ICompound operand)
         {
@@ -105,6 +128,16 @@ namespace SchoolScript.EvaluatorClasses
             IString str1 = (IString) operands[0];
             IString str2 = (IString) operands[1];
             if (str1.StringValue.Equals(str2.StringValue)) return EquationSign.EQUAL;
+
+            return EquationSign.NONE;
+        }
+
+        private EquationSign CompareBooleans(List<ICompound> operands)
+        {
+            IBoolean firstValue = (IBoolean) operands[0];
+            IBoolean secondValue = (IBoolean) operands[1];
+
+            if (firstValue.BooleanValue == secondValue.BooleanValue) return EquationSign.EQUAL;
 
             return EquationSign.NONE;
         }

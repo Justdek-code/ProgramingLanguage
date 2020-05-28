@@ -41,15 +41,15 @@ namespace SchoolScript.EvaluatorClasses
                 }
                 else if (statement.Type == ASTType.FUNCTION_CALL)
                 {
-                    CallFunction((IFunctionCall) statement);
+                    ExecuteFunction((IFunctionCall) statement);
                 }
                 else if (statement.Type == ASTType.IF_STATEMENT)
                 {
-                    ProcessIfStatement((IStatementIf) statement);
+                    ExecuteIfStatement((IStatementIf) statement);
                 }
-                else if (statement.Type == ASTType.FOR_LOOP)
+                else if (statement.Type == ASTType.WHILE_LOOP)
                 {
-                    
+                    ExecuteWhileLoop((IWhileLoop) statement);
                 }
                 else 
                 {
@@ -92,26 +92,38 @@ namespace SchoolScript.EvaluatorClasses
             }
             else if (value.Type == ASTType.MATH_OPERATION)
             {
-                Math math = new Math(value);
-                Integer result = math.GetContent();
+                Math math = new Math(value, _variables);
+                IInteger result = math.GetContent();
                 _variables.AssignVariable(variableName, new Variable(result.IntegerValue));
             }
         }
 
-        private void CallFunction(IFunctionCall callFunction)
+        private void ExecuteFunction(IFunctionCall callFunction)
         {
             Function function = _functions.GetFunction(callFunction.FunctionName);
             function.Invoke(callFunction.Leaves);
         }
 
-        private void ProcessIfStatement(IStatementIf ifStatment)
+        private void ExecuteIfStatement(IStatementIf ifStatment)
         {
             IEquation equation = (IEquation) ifStatment.Equation;
-            Compare compare = new Compare(equation.Leaves, equation.Sign, _variables);
+            Compare equationResult = new Compare(equation.Leaves, equation.Sign, _variables);
            
-            if (compare.GetContent() == true)
+            if (equationResult.GetContent() == true)
             {
                 Execute(ifStatment.Leaves);
+            }
+        }
+
+        private void ExecuteWhileLoop(IWhileLoop whileLoop)
+        {
+            IEquation equation = (IEquation) whileLoop.Equation;
+            Compare equationResult = new Compare(equation.Leaves, equation.Sign, _variables);
+
+            while (equationResult.GetContent())
+            {
+                Execute(whileLoop.Leaves);
+                equationResult.Update();
             }
         }
     }

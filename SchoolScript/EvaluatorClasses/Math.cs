@@ -6,24 +6,26 @@ namespace SchoolScript.EvaluatorClasses
 {
     public class Math
     {
-        private Integer _result;
+        private IInteger _result;
+        private VariablesHeap _variables;
 
 
-        public Math(ICompound expression)
+        public Math(ICompound expression, VariablesHeap variables)
         {
+            _variables = variables;
             _result = Calculate((IMathOperation) expression);            
         }
 
-        public Integer GetContent()
+        public IInteger GetContent()
         {
             return _result;
         }
 
-        private Integer Calculate(IMathOperation expression)
+        private IInteger Calculate(IMathOperation expression)
         {
             string operation = expression.Operation;
-            Integer result = new Integer(0);
-            List<Integer> solvedOperands = new List<Integer>();
+            IInteger result = new Integer(0);
+            List<IInteger> solvedOperands = new List<IInteger>();
             List<ICompound> operands = expression.Leaves;
             
             for (int i = 0; i < 2; i++)
@@ -31,6 +33,12 @@ namespace SchoolScript.EvaluatorClasses
                 if (operands[i].Type == ASTType.MATH_OPERATION)
                 {
                     solvedOperands.Add(Calculate((IMathOperation) operands[i]));
+                }
+                else if (operands[i].Type == ASTType.VARIABLE_CALL)
+                {
+                    IVariableCall variableCall = (IVariableCall) operands[i];
+                    Variable variable = _variables.GetVariable(variableCall.VariableName);
+                    solvedOperands.Add((IInteger) variable.GetContent());
                 }
                 else
                 {
@@ -46,22 +54,22 @@ namespace SchoolScript.EvaluatorClasses
             return result;
         }
 
-        private Integer addition (Integer a, Integer b)
+        private IInteger addition (IInteger a, IInteger b)
         {
             return new Integer(a.IntegerValue + b.IntegerValue);
         }
 
-        private Integer subtraction(Integer a, Integer b)
+        private IInteger subtraction(IInteger a, IInteger b)
         {
             return new Integer(a.IntegerValue - b.IntegerValue);
         }
 
-        private Integer division(Integer a, Integer b)
+        private IInteger division(IInteger a, IInteger b)
         {
             return new Integer(a.IntegerValue / b.IntegerValue);
         }
 
-        private Integer multiplication(Integer a, Integer b)
+        private IInteger multiplication(IInteger a, IInteger b)
         {
             return new Integer(a.IntegerValue * b.IntegerValue);
         }

@@ -11,7 +11,7 @@ namespace SchoolScript.AST
         MATH_OPERATION,
         EQUATION,
         IF_STATEMENT,
-        FOR_LOOP,
+        WHILE_LOOP,
         STRING,
         ASSIGNMENT,
         IDENTIFIER

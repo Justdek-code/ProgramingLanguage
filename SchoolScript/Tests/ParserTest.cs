@@ -33,18 +33,38 @@ namespace SchoolScript.Tests
             IVariableCall var2 = new VariableCall("b");
             ICompound readFuncCall = new FunctionCall(readVar, "ReadInteger");
 
+            // List<ICompound> equationOperands = new List<ICompound>();
+            // ICompound boolDef = new VariableDefinition("bool", new Boolean(false));
+            // VariableCall boolCall = new VariableCall("bool");
+            // equationOperands.Add(boolCall);
+            // equationOperands.Add(new Boolean(false));
+            // ICompound equation = new Equation(equationOperands, EquationSign.EQUAL);
+            // List<ICompound> ifBlock = new List<ICompound>();
+            // ifBlock.Add(funcCall);
+            // ICompound ifStatement = new If(equation, ifBlock);
+
+            ICompound init = new Assignment("a", new Integer(0));
+            List<ICompound> whileBlock = new List<ICompound>();
+            List<ICompound> arg = new List<ICompound>();
+            arg.Add(new Integer(5));
+            List<ICompound> args = new List<ICompound>();
+            args.Add(new VariableCall("a"));
+            args.Add(new Integer(1));
+            MathOperation oper = new MathOperation(args, "+");
+            ICompound varIncrement = new Assignment("a", oper);
+            whileBlock.Add(new FunctionCall(arg, "Print"));
+            whileBlock.Add(varIncrement);
+
             List<ICompound> equationOperands = new List<ICompound>();
-            equationOperands.Add(var);
-            equationOperands.Add(new Integer(16));
-            ICompound equation = new Equation(equationOperands, EquationSign.EQUAL);
-            List<ICompound> ifBlock = new List<ICompound>();
-            ifBlock.Add(funcCall);
-            ICompound ifStatement = new If(equation, ifBlock);
+            equationOperands.Add(new VariableCall("a"));
+            equationOperands.Add(new Integer(5));
+            ICompound equation = new Equation(equationOperands, EquationSign.LESS);
+
+            ICompound whileLoop = new WhileLoop(equation, whileBlock);
 
             statements.Add(varDefiniton);
-            statements.Add(funcCall);
-            statements.Add(readFuncCall);
-            statements.Add(ifStatement);
+            statements.Add(init);
+            statements.Add(whileLoop);
 
             compound = new CompoundTree(statements);
         }
