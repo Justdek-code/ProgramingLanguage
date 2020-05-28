@@ -6,15 +6,15 @@ namespace SchoolScript.EvaluatorClasses
 {
     public class Math
     {
-        private int _result;
+        private Integer _result;
 
 
         public Math(ICompound expression)
         {
-            _result = Calculate((IMathOperation) expression).IntegerValue;            
+            _result = Calculate((IMathOperation) expression);            
         }
 
-        public int GetContent()
+        public Integer GetContent()
         {
             return _result;
         }

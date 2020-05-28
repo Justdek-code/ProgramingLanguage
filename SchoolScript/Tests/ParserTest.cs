@@ -27,9 +27,17 @@ namespace SchoolScript.Tests
             arguments.Add(operation);
             ICompound funcCall = new FunctionCall(arguments, "Print");
 
+            List<ICompound> equationOperands = new List<ICompound>();
+            equationOperands.Add(new String("Hello"));
+            equationOperands.Add(new String("Hello"));
+            ICompound equation = new Equation(equationOperands, EquationSign.EQUAL);
+            List<ICompound> ifBlock = new List<ICompound>();
+            ifBlock.Add(funcCall);
+            ICompound ifStatement = new If(equation, ifBlock);
+
             statements.Add(varDefiniton);
             statements.Add(assignment);
-            statements.Add(funcCall);
+            statements.Add(ifStatement);
 
             compound = new CompoundTree(statements);
         }

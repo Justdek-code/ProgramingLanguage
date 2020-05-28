@@ -22,9 +22,14 @@ namespace SchoolScript.EvaluatorClasses
             _functions = new FunctionsHeap(_variables);
         }
 
-        public void Execute()
+        public void Run()
         {
-            foreach (ICompound statement in _compound.Leaves)
+            Execute(_compound.Leaves);
+        }
+
+        private void Execute(List<ICompound> statements)
+        {
+            foreach (ICompound statement in statements)
             {
                 if (statement.Type == ASTType.VAR_DEFINITION)
                 {
@@ -40,7 +45,7 @@ namespace SchoolScript.EvaluatorClasses
                 }
                 else if (statement.Type == ASTType.IF_STATEMENT)
                 {
-
+                    ProcessIfStatement((IStatementIf) statement);
                 }
                 else if (statement.Type == ASTType.FOR_LOOP)
                 {
@@ -88,8 +93,8 @@ namespace SchoolScript.EvaluatorClasses
             else if (value.Type == ASTType.MATH_OPERATION)
             {
                 Math math = new Math(value);
-                int result = math.GetContent();
-                _variables.AddVariable(variableName, new Variable(result));
+                Integer result = math.GetContent();
+                _variables.AddVariable(variableName, new Variable(result.IntegerValue));
             }
         }
 
@@ -97,6 +102,17 @@ namespace SchoolScript.EvaluatorClasses
         {
             IFunction function = _functions.GetFunction(callFunction.FunctionName);
             function.Invoke(callFunction.Leaves);
+        }
+
+        private void ProcessIfStatement(IStatementIf ifStatment)
+        {
+            IEquation equation = (IEquation) ifStatment.Equation;
+            Compare compare = new Compare(equation.Leaves, equation.Sign);
+           
+            if (compare.GetContent() == true)
+            {
+                Execute(ifStatment.Leaves);
+            }
         }
     }
 }

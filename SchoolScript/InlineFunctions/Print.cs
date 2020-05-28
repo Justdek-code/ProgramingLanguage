@@ -54,8 +54,8 @@ namespace SchoolScript.InlineFunctions
             else if (argument.Type == ASTType.MATH_OPERATION)
             {
                 EvaluatorClasses.Math math = new EvaluatorClasses.Math(argument);
-                int value = math.GetContent();
-                Console.WriteLine(value);
+                Integer value = math.GetContent();
+                Console.WriteLine(value.IntegerValue);
             }
         }
     }
