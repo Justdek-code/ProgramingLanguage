@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using SchoolScript.EvaluatorClasses;
 
 
-namespace SchoolScript.InlineFunctions
+namespace SchoolScript.Functions
 {
     public class ReadInteger : Function
     {

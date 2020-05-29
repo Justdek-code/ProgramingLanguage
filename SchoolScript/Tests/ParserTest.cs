@@ -42,8 +42,8 @@ namespace SchoolScript.Tests
             // List<ICompound> ifBlock = new List<ICompound>();
             // ifBlock.Add(funcCall);
             // ICompound ifStatement = new If(equation, ifBlock);
-
-            ICompound init = new Assignment("a", new Integer(0));
+            
+            ICompound init = new FunctionCall(readVar, "ReadInteger");
             List<ICompound> whileBlock = new List<ICompound>();
             List<ICompound> arg = new List<ICompound>();
             arg.Add(new Integer(5));

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using SchoolScript.AST;
 
 
-namespace SchoolScript.InlineFunctions
+namespace SchoolScript.Functions
 {
     public interface IFunction
     {

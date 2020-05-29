@@ -16,5 +16,6 @@ namespace SchoolScript.Tokens
         RCURLY_BRACE,
         LPARENTHESIS,
         RPARENTHESIS,
+        NONE
     }
 }

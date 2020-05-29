@@ -13,7 +13,7 @@ namespace SchoolScript.AST
             Type = ASTType.VAR_DEFINITION;
             
             Leaves = new List<ICompound>();
-            ICompound varInitialization = new Assignment(variableName, initialization); 
+            ICompound varInitialization = initialization; 
             Leaves.Add(varInitialization);
             VariableDefinitionName = variableName;
         }

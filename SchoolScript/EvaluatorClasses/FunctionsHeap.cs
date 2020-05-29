@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SchoolScript.InlineFunctions;
+using SchoolScript.Functions;
 
 
 namespace SchoolScript.EvaluatorClasses

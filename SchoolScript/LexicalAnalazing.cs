@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SchoolScript
 {
-    public class Lexer 
+    public class LexicalAnalazing 
     {
         private List<IToken> _tokens;
         private int _index;
@@ -18,7 +18,7 @@ namespace SchoolScript
         private readonly char NEW_LINE = '\n';
 
 
-        public Lexer(FileReader file)
+        public LexicalAnalazing(FileReader file)
         {
             _content = file.GetContent();
             _contentLenght = _content.Length;

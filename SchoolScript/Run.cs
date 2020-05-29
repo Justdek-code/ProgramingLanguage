@@ -4,6 +4,8 @@ using SchoolScript.Tokens;
 using SchoolScript.AST;
 using SchoolScript.Tests;
 using SchoolScript.EvaluatorClasses;
+using SchoolScript.ParserClasses;
+
 
 namespace SchoolScript
 {
@@ -13,14 +15,16 @@ namespace SchoolScript
         {
             string path = "C:\\LangInterpreter\\SchoolScript\\CodeExamples\\example1.ss";
 
-            new Lexer(
-                new FileReader(path)
+            new Parsing(
+                new LexicalAnalazing(
+                    new FileReader(path)
+                )
             );
 
 
             ParserTest parserTest = new ParserTest();
-            Evaluator evaluator = new Evaluator(parserTest.compound);
-            evaluator.Run();
+            Evaluating evaluator = new Evaluating(parserTest.compound);
+
         }           
     }
 }

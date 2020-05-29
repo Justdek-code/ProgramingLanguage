@@ -2,20 +2,20 @@ using System;
 using System.Collections.Generic;
 using SchoolScript.AST;
 using SchoolScript.Tokens;
-using SchoolScript.InlineFunctions;
+using SchoolScript.Functions;
 
 
 namespace SchoolScript.EvaluatorClasses
 {
 
-    public class Evaluator
+    public class Evaluating
     {
         private ICompound _compound;
         private VariablesHeap _variables;
         private FunctionsHeap _functions;
 
 
-        public Evaluator(ICompound compound) // it future it will takes parser object 
+        public Evaluating(ICompound compound) // it future it will takes parser object 
         {
             _compound = compound;
             _variables = new VariablesHeap();
