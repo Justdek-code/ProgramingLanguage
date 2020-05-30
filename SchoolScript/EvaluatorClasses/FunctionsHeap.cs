@@ -31,6 +31,7 @@ namespace SchoolScript.EvaluatorClasses
             Dictionary<string, Function> functions = new Dictionary<string, Function>();
             functions.Add("Print", new Print(_variables));
             functions.Add("ReadInteger", new ReadInteger(_variables));
+            functions.Add("ReadString", new ReadString(_variables));
 
             return functions;
         }

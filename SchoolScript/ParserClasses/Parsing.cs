@@ -47,7 +47,7 @@ namespace SchoolScript.ParserClasses
                     }
                     else if (_tokens.GetCurrent().Value == "if")
                     {
-                        
+                        statements.Add(new IfStatementParser(_tokens, ParseStatments).GetContent());
                     }
                 }
                 else if (IsFunctionCall())  

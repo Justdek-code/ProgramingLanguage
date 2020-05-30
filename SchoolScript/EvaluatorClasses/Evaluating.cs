@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SchoolScript.AST;
 using SchoolScript.Tokens;
 using SchoolScript.Functions;
+using SchoolScript.ParserClasses;
 
 
 namespace SchoolScript.EvaluatorClasses
@@ -15,9 +16,9 @@ namespace SchoolScript.EvaluatorClasses
         private FunctionsHeap _functions;
 
 
-        public Evaluating(ICompound compound) // it future it will takes parser object 
+        public Evaluating(Parsing parser) // it future it will takes parser object 
         {
-            _compound = compound;
+            _compound = parser.GetContent();
             _variables = new VariablesHeap();
             _functions = new FunctionsHeap(_variables);
         }

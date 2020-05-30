@@ -13,16 +13,15 @@ namespace SchoolScript
     {
         static void Main(string[] args)
         {
-            string path = "C:\\LangInterpreter\\SchoolScript\\CodeExamples\\example1.ss";
+            string path = "C:\\LangInterpreter\\SchoolScript\\CodeExamples\\calculator.ss";
 
-            var reader = new FileReader(path);
-            var lexer = new LexicalAnalazing(reader);
-            lexer.PrintTokens();
-            var parser = new Parsing(lexer);
-
-
-            ParserTest parserTest = new ParserTest();
-            Evaluating evaluator = new Evaluating(parserTest.compound);
+            new Evaluating(
+                new Parsing(
+                    new LexicalAnalazing(
+                        new FileReader(args[0])
+                    )
+                )
+            ).Run();
 
         }           
     }
