@@ -9,33 +9,46 @@ namespace SchoolScript.ParserClasses
     {
         public ValueParser(TokenControl tokens) : base(tokens)
         {
-            Parse();
+            _result = Parse();
         }
 
-        private void Parse()
+        private ICompound Parse()
         {
+            ICompound result;
             if (_tokens.GetCurrent().Type == TokenType.STRING)
             {
-                _result = new AST.String(_tokens.GetCurrent().Value);
+                result = new AST.String(_tokens.GetCurrent().Value);
                 _tokens.NextToken();
             }
             else if (IsMathOperation())
             {
                 var mathOperationParser = new MathOperationParser(_tokens);
-                _result = mathOperationParser.GetContent();
+                result = mathOperationParser.GetContent();
                 _tokens.NextToken();
             }
             else if (_tokens.GetCurrent().Type == TokenType.NUMBER)
             {
                 int value = int.Parse(_tokens.GetCurrent().Value);
-                _result = new AST.Integer(value);
+                result = new AST.Integer(value);
+                _tokens.NextToken();
+            }
+            else if (_tokens.GetCurrent().Type == TokenType.BOOLEAN)
+            {
+                bool value = bool.Parse(_tokens.GetCurrent().Value);
+                result = new AST.Boolean(value);
                 _tokens.NextToken();
             }
             else if (_tokens.GetCurrent().Type == TokenType.IDENTIFIER)
             {
-                _result = new VariableCall(_tokens.GetCurrent().Value);
+                result = new VariableCall(_tokens.GetCurrent().Value);
                 _tokens.NextToken();
             }
+            else
+            {
+                throw new NotImplementedException("error: value is not recognized");
+            }
+
+            return result;
         }
 
         private bool IsMathOperation()

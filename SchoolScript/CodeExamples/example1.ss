@@ -1,6 +1,9 @@
 var a = 1 + 1;
+var b = true;
 
 a = a + 1;
+
+print(a, "Hello World", 15);
 
 while (a < 5)
 {

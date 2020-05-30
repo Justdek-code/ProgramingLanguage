@@ -41,12 +41,23 @@ namespace SchoolScript.ParserClasses
                 }
                 else if (IsKeywordCall(_tokens.GetCurrent()))
                 {
-
+                    if (_tokens.GetCurrent().Value == "while")
+                    {
+                        statements.Add(new WhileLoopParser(_tokens, ParseStatments).GetContent());
+                    }
+                    else if (_tokens.GetCurrent().Value == "if")
+                    {
+                        
+                    }
                 }
                 else if (IsFunctionCall())  
                 {
-                    
-                }   
+                    statements.Add(new FunctionCallParser(_tokens).GetContent());
+                }
+                else if (_tokens.GetCurrent().Type == TokenType.RCURLY_BRACE)
+                {
+                    break;
+                }
                 else
                 {
                     throw new NotImplementedException("error: cannot detemine statement type");
@@ -122,7 +133,7 @@ namespace SchoolScript.ParserClasses
             _tokens.PreviousToken();
             return false;
         }
-
+        
         private List<string> InitializeKeywords()
         {
             List<string> keywords = new List<string>();

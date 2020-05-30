@@ -9,10 +9,10 @@ namespace SchoolScript.ParserClasses
     {
         public AssignmentParser(TokenControl tokens) : base(tokens)
         {
-            Parse();
+            _result = Parse();
         }
 
-        private void Parse()
+        private ICompound Parse()
         {
             CheckSyntaxCorrectness(_tokens.GetCurrent(), TokenType.IDENTIFIER);
             string variableName = _tokens.GetCurrent().Value;
@@ -24,9 +24,9 @@ namespace SchoolScript.ParserClasses
             var valueParser = new ValueParser(_tokens);
             
             IAssignment assignment = new Assignment(variableName, valueParser.GetContent());
-            _result = assignment;
-
+            
             CheckSyntaxCorrectness(_tokens.GetCurrent(), TokenType.SEMI);
+            return assignment;
         }
     }
 }

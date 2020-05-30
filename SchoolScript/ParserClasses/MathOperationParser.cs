@@ -10,10 +10,10 @@ namespace SchoolScript.ParserClasses
     {
         public MathOperationParser(TokenControl tokens) : base(tokens)
         {
-            Parse();
+            _result = Parse();
         }
 
-        private void Parse()
+        private ICompound Parse()
         {
             List<ICompound> operands = new List<ICompound>();
             string operation = string.Empty;
@@ -43,7 +43,7 @@ namespace SchoolScript.ParserClasses
             }
 
             var mathOperation = new MathOperation(operands, operation);
-            _result = mathOperation;
+            return mathOperation;
         }
     }
 }

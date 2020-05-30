@@ -51,9 +51,23 @@ namespace SchoolScript
                     SkipWhitespace();
                     continue;
                 }
-                else if (Char.IsNumber(_currentSymbol) ) temp = CollectNumber();
-                else if (Char.IsLetter(_currentSymbol) || _currentSymbol == UNDERLINE) temp = CollectIdentifier();
-                else if (_currentSymbol == STRING_DEFINITION) temp = CollectString();
+                else if (Char.IsNumber(_currentSymbol) )
+                {
+                   temp = CollectNumber(); 
+                } 
+                else if (Char.IsLetter(_currentSymbol) || _currentSymbol == UNDERLINE)
+                {
+                    temp = CollectIdentifier();
+                    if (IsBoolean(temp))
+                    {
+                        temp = new Token(TokenType.BOOLEAN, temp.Value);
+                    }
+                    
+                } 
+                else if (_currentSymbol == STRING_DEFINITION)
+                {
+                    temp = CollectString(); 
+                } 
                 else
                 {
                     if (IsEqualSign())
@@ -107,6 +121,19 @@ namespace SchoolScript
             }
         }
 
+        private bool IsBoolean(IToken token)
+        {
+            if (token.Type == TokenType.IDENTIFIER)
+            {
+                if (token.Value == "true" || token.Value == "false")
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void SkipWhitespace()
         {
             NextSymbol();
@@ -125,6 +152,7 @@ namespace SchoolScript
             while (Char.IsNumber(_content[_index]) )
             {
                 number += _content[_index];
+                NextSymbol();
             }
 
             return new Token(TokenType.NUMBER, number);

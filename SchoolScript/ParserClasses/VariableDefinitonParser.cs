@@ -9,10 +9,10 @@ namespace SchoolScript.ParserClasses
     {
         public VariableDefinitionParser(TokenControl tokens) : base(tokens)
         {
-            Parse();
+            _result = Parse();
         }
 
-        private void Parse()
+        private ICompound Parse()
         {
             CheckSyntaxCorrectness(_tokens.GetCurrent(), "var");
             _tokens.NextToken();
@@ -21,7 +21,7 @@ namespace SchoolScript.ParserClasses
             IAssignment assignment = (IAssignment) assignmentParser.GetContent();
 
             var variableDefiniton = new VariableDefinition(assignment.VariableName, assignment);
-            _result = variableDefiniton;
+            return variableDefiniton;
         }
     }
 }

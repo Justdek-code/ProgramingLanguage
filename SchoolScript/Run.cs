@@ -15,11 +15,10 @@ namespace SchoolScript
         {
             string path = "C:\\LangInterpreter\\SchoolScript\\CodeExamples\\example1.ss";
 
-            new Parsing(
-                new LexicalAnalazing(
-                    new FileReader(path)
-                )
-            );
+            var reader = new FileReader(path);
+            var lexer = new LexicalAnalazing(reader);
+            lexer.PrintTokens();
+            var parser = new Parsing(lexer);
 
 
             ParserTest parserTest = new ParserTest();
