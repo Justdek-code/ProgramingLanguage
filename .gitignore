@@ -8,6 +8,7 @@
 
 # Build results
 
+.vscode/
 [Dd]ebug/
 [Rr]elease/
 x64/
